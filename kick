@@ -1,0 +1,20 @@
+const lib = require('lib')({token: process.env.STDLIB_SECRET_TOKEN});
+
+let adminRole = '799044262800654367';
+
+if (context.params.event.member.roles.includes(adminRole)) {
+  let userId = context.params.event.data.options[0].value;
+  let result = await lib.discord.guilds['@0.1.0'].members.destroy({
+    user_id: `${userId}`,
+    guild_id: `${context.params.event.guild_id}`,
+  });
+  await lib.discord.channels['@0.2.0'].messages.create({
+    channel_id: `${context.params.event.channel_id}`,
+    content: `Кікнуто`
+  });
+} else {
+  await lib.discord.channels['@0.2.0'].messages.create({
+    channel_id: `${context.params.event.channel_id}`,
+    content: `сука як ти заєбав`,
+  });
+}
